@@ -4,7 +4,9 @@
  */
 package lab9p2_josuerivera;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -209,15 +211,25 @@ public class Lab9p2 extends javax.swing.JFrame {
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // TODO add your handling code here:
         File archivo = null;
+        FileReader fr = null;
+        BufferedReader br = null;
         try {
             JFileChooser jfc = new JFileChooser("./");
+            
             FileNameExtensionFilter filtro = new FileNameExtensionFilter(
                             "Archivos de Texto", "txt");
             jfc.setFileFilter(filtro);
             int select = jfc.showOpenDialog(this);
             if(select == JFileChooser.APPROVE_OPTION){
                 archivo = jfc.getSelectedFile();
-                
+                fr = new FileReader(archivo);
+               br=new BufferedReader(fr);
+               String linea;
+               jTextArea1.setText("");
+               while(  (linea=br.readLine()) !=null  ){                    
+                    jTextArea1.append(linea);
+                    jTextArea1.append("\n");
+                }
             }
         } catch (Exception e) {
         }

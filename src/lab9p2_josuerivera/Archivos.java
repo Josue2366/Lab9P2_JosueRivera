@@ -4,6 +4,7 @@
  */
 package lab9p2_josuerivera;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
@@ -33,8 +34,24 @@ public class Archivos {
     public void setTexto(JTextArea texto) {
         this.texto = texto;
     }
-    public void leerarc(){
-        
+    public void leerarc() throws IOException{
+        FileReader fr = null;
+        BufferedReader br = null;
+        texto.setText("");
+        if(arc.exists()){
+            try {
+                fr =new FileReader(arc);
+                br = new BufferedReader(fr);
+                String s;
+                while((s = br.readLine()) != null){
+                    texto.append(s);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            br.close();
+            fr.close();
+        }
     }
     public void escribirarc() throws IOException{
         String info = texto.getText();
@@ -46,6 +63,7 @@ public class Archivos {
             bw.write(info);
             bw.flush();
         } catch (Exception e) {
+            e.printStackTrace();
         }
         bw.close();
         fw.close();
