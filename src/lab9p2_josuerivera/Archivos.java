@@ -20,8 +20,8 @@ public class Archivos {
     File arc;
     JTextArea texto;
 
-    public Archivos(File arc, JTextArea texto) {
-        this.arc = arc;
+    public Archivos(String x, JTextArea texto) {
+        this.arc = new File(x);
         this.texto = texto;
     }
 
@@ -54,14 +54,18 @@ public class Archivos {
         }
     }
     public void escribirarc() throws IOException{
-        String info = texto.getText();
+        String info= texto.getText();
         FileWriter fw = null;
         BufferedWriter bw = null;
         try {
             fw = new FileWriter(arc);
             bw = new BufferedWriter(fw);
             bw.write(info);
+//            while((info = texto.getText()) != null){
+//                bw.write(info);
+//            }
             bw.flush();
+            
         } catch (Exception e) {
             e.printStackTrace();
         }

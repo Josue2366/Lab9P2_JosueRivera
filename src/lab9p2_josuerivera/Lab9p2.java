@@ -7,7 +7,11 @@ package lab9p2_josuerivera;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -135,6 +139,11 @@ public class Lab9p2 extends javax.swing.JFrame {
         });
 
         Guardar.setText("Guardar");
+        Guardar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                GuardarMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -210,6 +219,7 @@ public class Lab9p2 extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // TODO add your handling code here:
+        jTextArea1.setText("");
         File archivo = null;
         FileReader fr = null;
         BufferedReader br = null;
@@ -222,18 +232,40 @@ public class Lab9p2 extends javax.swing.JFrame {
             int select = jfc.showOpenDialog(this);
             if(select == JFileChooser.APPROVE_OPTION){
                 archivo = jfc.getSelectedFile();
-                fr = new FileReader(archivo);
-               br=new BufferedReader(fr);
-               String linea;
-               jTextArea1.setText("");
-               while(  (linea=br.readLine()) !=null  ){                    
-                    jTextArea1.append(linea);
-                    jTextArea1.append("\n");
-                }
+                file = jfc.getSelectedFile();
+                Barra b = new Barra(jProgressBar1,jTextArea1,file);
+                Thread th = new Thread(b);
+                th.start();
+//                fr = new FileReader(archivo);
+//               br=new BufferedReader(fr);
+//               String linea;
+//               jTextArea1.setText("");
+//               while(  (linea=br.readLine()) !=null  ){                    
+//                    jTextArea1.append(linea);
+//                    jTextArea1.append("\n");
+//                }
             }
         } catch (Exception e) {
         }
     }//GEN-LAST:event_jButton1MouseClicked
+
+    private void GuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GuardarMouseClicked
+        // TODO add your handling code here:
+        if(!(file == null)){
+            Archivos p = new Archivos(file.getAbsolutePath(),jTextArea1); 
+            try {
+                p.escribirarc();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            JOptionPane.showMessageDialog(this, "Se guardo con exito.");
+            jTextArea1.setText("");
+            
+        }
+        else{
+            JOptionPane.showMessageDialog(this,"tienes que escoger un archivo");
+        }
+    }//GEN-LAST:event_GuardarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -287,4 +319,5 @@ public class Lab9p2 extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
+ File file;
 }
